@@ -120,7 +120,8 @@ namespace NGit.Storage.File
 				{
 					throw new MissingObjectException(objectId.Copy(), "unknown");
 				}
-				throw new MissingObjectException(objectId.Copy(), typeHint);
+                return null;  // DC
+				// DC //throw new MissingObjectException(objectId.Copy(), typeHint);
 			}
 			if (typeHint != OBJ_ANY && ldr.GetType() != typeHint)
 			{

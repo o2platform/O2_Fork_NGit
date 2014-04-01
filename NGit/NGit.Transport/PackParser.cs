@@ -1151,11 +1151,14 @@ namespace NGit.Transport
 			try
 			{
 				ObjectLoader ldr = readCurs.Open(id, type);
-				byte[] existingData = ldr.GetCachedBytes(data.Length);
-				if (!Arrays.Equals(data, existingData))
-				{
-					throw new IOException(MessageFormat.Format(JGitText.Get().collisionOn, id.Name));
-				}
+                if (ldr != null)
+                {
+				    byte[] existingData = ldr.GetCachedBytes(data.Length);
+				    if (!Arrays.Equals(data, existingData))
+				    {
+					    throw new IOException(MessageFormat.Format(JGitText.Get().collisionOn, id.Name));
+				    }
+                }
 			}
 			catch (MissingObjectException)
 			{

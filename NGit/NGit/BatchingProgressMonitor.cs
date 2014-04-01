@@ -146,6 +146,8 @@ namespace NGit
 
 		public override void Update(int completed)
 		{
+            //DC performance
+            return;
 			if (task != null)
 			{
 				task.Update(this, completed);

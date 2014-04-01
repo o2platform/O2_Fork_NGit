@@ -180,7 +180,9 @@ namespace NGit.Transport
 
 					case CH_PROGRESS:
 					{
-						Progress(ReadString(available));
+					    //DC: see if commenting the line below improves performance for large repos
+                        Progress(ReadString(available));
+                      //  System.Diagnostics.Debug.WriteLine("> in CH_PROGRESS");
 						continue;
 						goto case CH_ERROR;
 					}
@@ -203,6 +205,8 @@ namespace NGit.Transport
 		/// <exception cref="System.IO.IOException"></exception>
 		private void Progress(string pkt)
 		{
+            //DC 
+            return;
 			pkt = progressBuffer + pkt;
 			for (; ; )
 			{
@@ -231,7 +235,8 @@ namespace NGit.Transport
 						}
 					}
 				}
-				DoProgressLine(Sharpen.Runtime.Substring(pkt, 0, s + 1));
+            //DC: ** See if this fixes performance prob
+			//DC:	DoProgressLine(Sharpen.Runtime.Substring(pkt, 0, s + 1));
 				pkt = Sharpen.Runtime.Substring(pkt, s + 1);
 			}
 			progressBuffer = pkt;
@@ -284,7 +289,13 @@ namespace NGit.Transport
 		{
 			byte[] raw = new byte[len];
 			IOUtil.ReadFully(rawIn, raw, 0, len);
-			return RawParseUtils.Decode(Constants.CHARSET, raw, 0, len);
+            if (count++ % 1000 ==0)
+                System.Diagnostics.Debug.WriteLine("Count:" + count);
+            
+            return "";
+			//return RawParseUtils.Decode(Constants.CHARSET, raw, 0, len);
 		}
+
+        int count = 0;
 	}
 }
